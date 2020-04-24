@@ -1,9 +1,9 @@
 \documentclass[11pt, oneside]{report}   	% use "amsart" instead of "article" for AMSLaTeX format	
 \usepackage{amssymb}
 \usepackage{xcolor}
-
+\usepackage{exercise}
 \usepackage{listings}
-
+\definecolor{mydarkgreen}{rgb}{0.0, 0.42, 0.24}
 \lstset{language=Matlab,
 	%frame=single,                           % Single frame around code
         basicstyle=\small\ttfamily,             % Use small true type font
@@ -12,8 +12,8 @@
         keywordstyle=[3]\color{blue}\underbar,  % User functions underlined and blue
         identifierstyle=,                       % Nothing special about identifiers
                                                 % Comments small dark green courier
-        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small,
-        stringstyle=\color{Purple},             % Strings are purple
+        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{mydarkgreen}\small,
+        stringstyle=\color{purple},             % Strings are purple
         showstringspaces=false,                 % Don't put marks in string spaces
         tabsize=5,                              % 5 spaces per tab
         %
@@ -27,10 +27,10 @@
         %%% Put user defined functions here
         morekeywords=[3]{FindESS, homework_example},
         %
-        morecomment=[l][\color{Blue}]{...},     % Line continuation (...) like blue comment
+        morecomment=[l][\color{blue}]{...},     % Line continuation (...) like blue comment
         numbers=left,                           % Line numbers on left
         firstnumber=1,                          % Line numbers start with line 1
-        numberstyle=\tiny\color{Blue},          % Line numbers are blue
+        numberstyle=\tiny\color{blue},          % Line numbers are blue
         stepnumber=5            
 }
 %SetFonts
@@ -62,8 +62,9 @@ The name MATLAB was originally a contraction of “Matrix Laboratory” and inde
 This is the crux of the main usefulness of MatLab. Everyone knows that computers work with numbers only (think binary), but with MatLab we can use something called the
 \textit{Symbolic Math Toolbox}, which is used for doing \textbf{algebraic expressions/manipulation} that we are all used to in doing any kind of maths. This can be used to
 solve algebraic equations, factorisation of polynomials and simplifying complicated expressions (although sometimes humans do it better). In school, if you haven't done any
-maths, then topics such as \textit{integrations} and \textit{differentiation} or just \textit{calculus} in general is very daunting for people with little background in these topics. 
-This language helps with that issue, as it can actually evaluate \textit{limits, sums, derivatives} and \textit{integrals} with just a few commands.
+maths, then topics such as \textit{integrations} and \textit{differentiation} or just \textit{calculus} in general is very daunting. 
+
+This programming language helps with that issue, as it can actually evaluate \textit{limits, sums, derivatives} and \textit{integrals} with just a few commands.
 
 The origins of \textit{Symbolic Math Toolbox} is well documented on internet. For those interested, lookup the computer algebra system called \textit{MuPAD} which is the main powerhouse of \textit{Symbolic Math Toolbox}.
 
@@ -165,10 +166,13 @@ Note that when things don't work as you'd expect them to and you are sure that t
 sometimes we store things that we have forgotten about.
 \\
 
-\textbf{$save$ command}\\ 
+\textbf{$save$ command}
+\\
 
 
-This is the opposite of the \textit{clear} command, in terms of its function. It saves all the current variables into a file that you can name in the current folder. Try understanding this command from the \textit{help} function. I will give you an example of this in the tutorial. (This is mostly useful if you have experiments and don't want to lose what you've got so far).
+This is the opposite of the \textit{clear} command, in terms of its function. It saves all the current variables into a file that you can name in the current folder. Try understanding
+this command from the \textit{help} function. I will give you an example of this in the tutorial. (This is mostly useful if you have experiments and don't want to lose what you've
+got so far).
 
 \begin{lstlisting}
 <++ insert code here ++>
@@ -176,7 +180,127 @@ This is the opposite of the \textit{clear} command, in terms of its function. It
 
 \end{subsection}
 
+\begin{subsection}{Semicolon}
+Try the following two lines of code and see what the difference is:
+
+\begin{lstlisting}
+>> a = 1;  % notice the semicolon
+>> b = 1
+\end{lstlisting}
+Do you see any difference in the output? The difference is that when you typed:
+
+\begin{lstlisting}
+>> a = 1;
+\end{lstlisting}
+The interpreter would not return an output, i.e it will suppress the output that you should've gotten whereas when you typed:
+\begin{lstlisting}
+>> b = 1
+\end{lstlisting}
+You would get an output and this output indicating that the interpreter has store the value 1 to b. You might be wondering, why is it so important that I'm mentioning this here.
+Now suppose that you have hundreds of lines of code running repeatedly (in a loop) over and over, how will you make a distinction between what appears on the screen and what you want to find. This is the reason why I felt that this was important. 
+
+\end{subsection}
+
+\begin{subsection}{Precision}
+This is one of the most important things that programmers should be wary of. In the old days, where languages like COBOL could make use of fixed-point arithmetic, MatLab in contrast is a language where all (majority) operations defaults on floating-point arithmetic. So if you do any calculations in MatLab, you would get an approximation which is correct to 15 decimal places (typically - depending on hardware). So try typing the following code in the Interpreter:
+
+\begin{lstlisting}
+>> 7/5
+>> pi
+>> sqrt(2) % this is square root function
+\end{lstlisting}
+Now to see the actual practical difference, we know that $\sin{0} = \sin{\pi}$ but if you try and type the following in the terminal, you will see that:
+
+\begin{lstlisting}
+>> sin(0)
+>> sin(pi)
+\end{lstlisting}
+where the former returns $0$ whilst the later returns the ans to be $1.2246 \times 10^{-16}$. Indeed, both of them are very close but when we look at the actual value, it's not actually equal.
+
+If you want to see more digits of your inputs you can type:
+\begin{lstlisting}
+>> format long
+>> sin(pi)
+\end{lstlisting}
+
+\end{subsection}
+
+Before we move onto our next important topic, we all know sometimes that the answers that calculators spit out at the end are sometimes not useful to us in a general sense. For example, sometimes we want $\frac{6}{8}$ to be $\frac{3}{4}$ and not $0.75$, especially if we want to study mathematics - we are often less interested in the numerical solution but rather how or why of it? The same is true for science. It is more accurate to work with a symbolic representation of things rather than numbers (approximations). Think of Trapezium rule vs indefinite integral. The trapezium rule is enough if we are just interested in a numerical answer of the integral expression whereas the indefinite integral gives us a general expression which we can use to give an interpretation of the actual behaviour of the integral. We would like to be able to do both of these tasks, and MatLab provides ways to do both of these tasks.
+
+\begin{subsection}{Symbolic Computing}
+Remember in the beginning when installing MatLab it required you to enable some feature that you may have wanted to be installed along with the main interface. One of those features is Symbolic Math Toolbox. This adds symbolic computing features to MatLab. Symbolic computing is a kind of software that works with symbols rather than numbers which is build on certain rules. 
+You can check whether you have Symbolic Math Toolbox installed on your system by typing the following command in the prompt:
+
+\begin{lstlisting}
+>> ver
+\end{lstlisting}
+this will produce a lot of information but the only important information that we need to look at is a line with "Symbolic Math Toolbox" and its version written on the side.
+After making sure that you have Symbolic Math Toolbox, you can try and test this by using the following few commands:
+
+\begin{lstlisting}
+>> sym('6/9')
+>> sym( '1')
+>> a = sym('pi')
+>> sin(a)
+>> b = sym('2')
+>> c = sqrt(b)
+>> c^2
+\end{lstlisting}
+
+Notice the single quotes around the inputs inside the brackets of sym function. Anything inside those single quotes is considered a string (it is easy to think of this as a combination of characters - here these characters are alphabets). For small error prone numbers, we don't have to use the quotes but there is a mechanism that MatLab has which looks at those raw numbers and tries to convert them to their symbolic representation. If you're interested then please do look at the \textit{help sym}, which will give an overview of how the quoteless mechanism works.
+
+If you want to see in action how the output differs, try the following exercise.
+\begin{Exercise}
+Try typing \textit{sym(13/10)}, \textit{sym(133/100)}, \textit{sym(1333/1000)} and follow this pattern a few more steps. Do you see some pattern emerge? Try doing it with the quotes around the same numbers you used earlier. What happens?
+\end{Exercise}
+
+In general, try to avoid using decimal places inside the quotes in sym command
+
+\begin{lstlisting}
+>> sym{'6/9') % Yes
+>> sym{6/9) % Sure works too
+>> sym{'6.0/9') % Probably not what you wanted. 
+
+\end{lstlisting}
+
+If you want to know why the latter doesn't work, look at \textit{help vpa} which is an abbreviation for variable precision arithmetic (even I don't know much about vpa).
+
+\end{subsection}
+
+\begin{subsection}{Working on files rather than the prompt}
+By now, you might be wondering whether you have to write all the commands every time you open MatLab that you were working on just now. Well, fret not because there is a way that you can write you code in a file and use the file to run the same lines of code again at a later time. This file is called a Script. Within MatLab, you can go to $\textit{File} \rightarrow \textit{New Script}$.
+
+Add some comments and code like so:
+
+\begin{lstlisting}
+% My solution to Exercise 1
+sym(13/10)
+sym(133/100)
+sym(1333/1000)
+...
+\end{lstlisting} 
+Save the file with a distinguishable name so you can refer to it later. I suggest something like "Exercise1.m". From the editor, you can run the script directly or you can run the script from the prompt by typing the name of the file without the \textit{.m}. For example:
+\begin{lstlisting}
+>> Exercise1 
+\end{lstlisting}
+
+In any case, the content of the script would execute in the command window. You can alternate between editing and running the script. I would definitely recommend using scripts because by the end of this course, you should see how much progress you've made. But don't neglect the command window, because you can prototype in the command window and use that as a template for what goes inside your script.
+\end{subsection}
+
+This brings us to the end of our first session. Phew... we've covered quite a lot of material. Congratulations!
+
+Now, if you have any questions about anything that we have gone over so far, I'm happy to answer them.
+
+See you all next week. Peace.
+
 \end{section}
 \end{chapter}
+
+\begin{chapter}{Introduction - The Sequel}
+To be continued...
+
+\end{chapter}
+
+
 
 \end{document}  
